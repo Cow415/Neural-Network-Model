@@ -1,0 +1,12 @@
+Pipeline: 
+    Input Image
+        |
+    Preprocess
+        |
+    Flatten
+        |
+    Neural Network
+        |
+    Prob. Distribution
+        |
+    Decision via Max Odd
