@@ -22,3 +22,19 @@ def flatten_data(data):
     """Flatten the input data to a 1D array."""
     return data.flatten()
 
+def pooling_layer(inputs, pool_size, stride):
+    """Apply a simple max pooling operation."""
+    (input_height, input_width) = inputs.shape
+    new_height = int(1 + (input_height - pool_size) / stride)
+    new_width = int(1 + (input_width - pool_size) / stride)
+    pooled = np.zeros((new_height, new_width))
+    for h in range(new_height):
+        for w in range(new_width):
+            vert_start = h * stride
+            vert_end = vert_start + pool_size
+            horiz_start = w * stride
+            horiz_end = horiz_start + pool_size
+
+            a_slice = inputs[vert_start:vert_end, horiz_start:horiz_end]
+            pooled[h, w] = np.max(a_slice)
+    return pooled
