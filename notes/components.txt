@@ -1,7 +1,11 @@
 Pipeline: 
     Input Image
         |
-    Preprocess
+    Preprocess (Extract matrix, zeropadding)
+        |
+    Filter & Convolve
+        |
+    Pool the matrix
         |
     Flatten
         |
@@ -10,3 +14,5 @@ Pipeline:
     Prob. Distribution
         |
     Decision via Max Odd
+
+    

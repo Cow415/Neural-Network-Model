@@ -22,6 +22,10 @@ def flatten_data(data):
     """Flatten the input data to a 1D array."""
     return data.flatten()
 
+def padding_layer(inputs, pad_width):
+    """Apply zero-padding to the input data."""
+    return np.pad(inputs, pad_width, mode='constant', constant_values=0)
+
 def pooling_layer(inputs, pool_size, stride):
     """Apply a simple max pooling operation."""
     (input_height, input_width) = inputs.shape
@@ -38,3 +42,21 @@ def pooling_layer(inputs, pool_size, stride):
             a_slice = inputs[vert_start:vert_end, horiz_start:horiz_end]
             pooled[h, w] = np.max(a_slice)
     return pooled
+
+def convolution_layer(inputs, filter_kernel, bias, stride=1):
+    """Apply a simple convolution operation, condenses inputs with given kernel"""
+    (input_height, input_width) = inputs.shape
+    (filter_height, filter_width) = filter_kernel.shape
+    new_height = int((input_height - filter_height) / stride) + 1
+    new_width = int((input_width - filter_width) / stride) + 1
+    convolved = np.zeros((new_height, new_width))
+    for h in range(new_height):
+        for w in range(new_width):
+            vert_start = h * stride
+            vert_end = vert_start + filter_height
+            horiz_start = w * stride
+            horiz_end = horiz_start + filter_width
+
+            a_slice = inputs[vert_start:vert_end, horiz_start:horiz_end]
+            convolved[h, w] = np.sum(a_slice * filter_kernel) + bias
+    return convolved
