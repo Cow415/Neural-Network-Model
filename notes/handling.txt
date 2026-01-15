@@ -1,0 +1,12 @@
+MNIST dataset was used, 
+========================
+Constraints:
+Property	    Value
+Image size	    28 × 28
+Channels	    1 (grayscale)
+Classes	        10
+Dataset size	60k train / 10k test
+Pixel range	    [0, 255]
+=======================
+
+Modules that passed Pylint:
