@@ -22,6 +22,7 @@ class SequentialModel:
         """
         for l in reversed(self.layers):
             grad = l.backward(grad)
+            assert grad is not None, f"{l.__class__.__name__}.backward returned None"
 
     def params(self):
         """
@@ -29,7 +30,7 @@ class SequentialModel:
         """
         return [p for l in self.layers for p in l.params()]
 
-    def gradients(self):
+    def grads(self):
         """
         Return all gradients of the model
         """

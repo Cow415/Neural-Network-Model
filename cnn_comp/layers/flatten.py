@@ -1,6 +1,7 @@
 """
     Flatten Layer for CNNs
 """
+import numpy as np
 class Flatten:
     """
     A layer that flattens the input tensor into a 2D array.
@@ -12,9 +13,10 @@ class Flatten:
         """
         Forward pass to flatten the input tensor.
         """
+        assert not np.isnan(x).any()
         self.shape = x.shape
-        batch_size = input.shape[0]
-        return input.reshape(batch_size, -1)
+        batch_size = x.shape[0]
+        return x.reshape(batch_size, -1)
 
     def backward(self, output_gradient):
         """
@@ -27,7 +29,7 @@ class Flatten:
         Flatten layer has no parameters.
         """
         return []
-    def gradients(self):
+    def grads(self):
         """
         Flatten layer has no gradients.
         """

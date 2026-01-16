@@ -2,6 +2,7 @@
     Contains ReLU activation layer implementation.
     And Leaky ReLU variant.
 """
+import numpy as np
 
 class ReLU:
     """
@@ -14,6 +15,7 @@ class ReLU:
         """
             Forward pass of ReLU activation.
         """
+        assert not np.isnan(input_data).any()
         self.mask = input_data > 0
         return input_data * self.mask
 
@@ -27,6 +29,6 @@ class ReLU:
         """Null Parameters method"""
         return []  # No parameters in ReLU layer
 
-    def gradients(self):
+    def grads(self):
         """Null Gradients method"""
         return []   # No gradients in ReLU layer

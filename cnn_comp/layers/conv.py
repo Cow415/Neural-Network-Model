@@ -24,6 +24,9 @@ class Conv2D:
         """
         Forward pass of the convolutional layer.
         """
+        assert x.shape[1] == self.W.shape[1], \
+        f"Conv expected {self.W.shape[1]} channels, got {x.shape[1]}"
+        
         self.x = x
         N, C, H, W = x.shape
         F, _, KH, KW = self.W.shape
@@ -88,7 +91,7 @@ class Conv2D:
         return weights and biases
         """
         return [self.W, self.b]
-    def gradients(self):
+    def grads(self):
         """
         return gradients of weights and biases
         """
