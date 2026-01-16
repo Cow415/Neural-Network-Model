@@ -11,10 +11,14 @@ class Conv2D:
         self.stride = stride
         self.padding = padding
         self.k = k
+        self.x = None
+        self.x_pad = None
 
         scale = np.sqrt(2 / (in_c * k * k))
         self.W = np.random.randn(out_c, in_c, k, k) * scale
         self.b = np.zeros(out_c)
+        self.dW = np.zeros_like(self.W)
+        self.db = np.zeros_like(self.b)
 
     def forward(self, x):
         """
@@ -24,20 +28,20 @@ class Conv2D:
         N, C, H, W = x.shape
         F, _, KH, KW = self.W.shape
 
-        H_out = (H + 2*self.padding - KH) // self.stride + 1
-        W_out = (W + 2*self.padding - KW) // self.stride + 1
+        height_out = (H + 2*self.padding - KH) // self.stride + 1
+        weight_out = (W + 2*self.padding - KW) // self.stride + 1
 
         x_pad = np.pad(x,
             ((0,0),(0,0),(self.padding,self.padding),(self.padding,self.padding))
         )
         self.x_pad = x_pad
 
-        out = np.zeros((N, F, H_out, W_out))
+        out = np.zeros((N, F, height_out, weight_out))
 
         for n in range(N):
             for f in range(F):
-                for i in range(H_out):
-                    for j in range(W_out):
+                for i in range(height_out):
+                    for j in range(weight_out):
                         h = i * self.stride
                         w = j * self.stride
                         out[n,f,i,j] = np.sum(
@@ -50,6 +54,12 @@ class Conv2D:
         """
         Backward pass of the convolutional layer.
         """
+        if self.x is None:
+            raise RuntimeError("backward() called before forward()")
+        if dout is None:
+            raise RuntimeError("backward() called with None gradient")
+        if self.x_pad is None:
+            raise RuntimeError("backward() called before forward()")
         N, C, H, W = self.x.shape
         F, _, KH, KW = self.W.shape
 
@@ -57,18 +67,21 @@ class Conv2D:
         self.dW = np.zeros_like(self.W)
         self.db = np.sum(dout, axis=(0,2,3))
 
-        H_out, W_out = dout.shape[2:]
+        height_out, weight_out = dout.shape[2:]
 
         for n in range(N):
             for f in range(F):
-                for i in range(H_out):
-                    for j in range(W_out):
+                for i in range(height_out):
+                    for j in range(weight_out):
                         h = i * self.stride
                         w = j * self.stride
                         dx[n,:,h:h+KH,w:w+KW] += self.W[f] * dout[n,f,i,j]
                         self.dW[f] += self.x_pad[n,:,h:h+KH,w:w+KW] * dout[n,f,i,j]
 
-        return dx[:,:,self.padding:-self.padding,self.padding:-self.padding]
+        if self.padding > 0:
+            return dx[:,:,self.padding:-self.padding,self.padding:-self.padding]
+        else:
+            return dx
 
     def params(self):
         """
