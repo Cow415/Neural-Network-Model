@@ -2,11 +2,15 @@
 Unpack MNIST dataset from raw ubyte files and save as a compressed .npz file.
 """
 # Import necessary libraries
-import numpy as np
 import struct
 from pathlib import Path
+import numpy as np
 
 def load_images(path):
+    """
+    Load MNIST images from the given ubyte file.
+    Returns a numpy array of shape (num_images, 28, 28).
+    """
     with open(path, 'rb') as f:
         magic, n, rows, cols = struct.unpack(">IIII", f.read(16))
         assert magic == 2051
@@ -15,6 +19,10 @@ def load_images(path):
         return images
 
 def load_labels(path):
+    """
+    Load MNIST labels from the given ubyte file.
+    Returns a numpy array of shape (num_labels,).
+    """
     with open(path, 'rb') as f:
         magic, n = struct.unpack(">II", f.read(8))
         assert magic == 2049
@@ -22,7 +30,10 @@ def load_labels(path):
         return labels
 
 def main():
-    raw = Path("data/raw")
+    """
+    Main function to load MNIST data and save as compressed .npz file.
+    """
+    raw = Path("raw")
 
     x_train = load_images(raw / "train-images-idx3-ubyte")
     y_train = load_labels(raw / "train-labels-idx1-ubyte")
