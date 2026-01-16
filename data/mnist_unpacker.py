@@ -33,7 +33,7 @@ def main():
     """
     Main function to load MNIST data and save as compressed .npz file.
     """
-    raw = Path(__file__).parent / "raw"
+    raw = Path("/data/raw")
 
     x_train = load_images(raw / "train-images-idx3-ubyte")
     y_train = load_labels(raw / "train-labels-idx1-ubyte")
