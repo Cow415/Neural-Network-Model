@@ -35,10 +35,10 @@ def main():
     """
     raw = Path(__file__).parent / "raw"
 
-    x_train = load_images(raw / "train-images-idx3-ubyte")
-    y_train = load_labels(raw / "train-labels-idx1-ubyte")
-    x_test  = load_images(raw / "t10k-images-idx3-ubyte")
-    y_test  = load_labels(raw / "t10k-labels-idx1-ubyte")
+    x_train = load_images(raw / "train-images.idx3-ubyte")
+    y_train = load_labels(raw / "train-labels.idx1-ubyte")
+    x_test  = load_images(raw / "t10k-images.idx3-ubyte")
+    y_test  = load_labels(raw / "t10k-labels.idx1-ubyte")
 
     # Normalize and reshape for CNN
     x_train = x_train.astype(np.float32) / 255.0
