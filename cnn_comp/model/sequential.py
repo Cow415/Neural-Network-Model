@@ -5,16 +5,32 @@ Network architecture is defined here in a sequential manner.
 
 class SequentialModel:
     """A simple sequential model to stack layers."""
-    def __init__(self):
-        self.layers = []
+    def __init__(self, layers):
+        self.layers = layers
 
-    def add_layer(self, layer):
-        """Add a layer to the model."""
-        self.layers.append(layer)
+    def forward(self, x):
+        """
+        Define the forward pass through all layers
+        """
+        for l in self.layers:
+            x = l.forward(x)
+        return x
 
-    def forward(self, input_data):
-        """Forward pass through all layers."""
-        output = input_data
-        for layer in self.layers:
-            output = layer.forward(output)
-        return output
+    def backward(self, grad):
+        """
+        Define the backward pass through all layers
+        """
+        for l in reversed(self.layers):
+            grad = l.backward(grad)
+
+    def params(self):
+        """
+        Return all parameters of the model
+        """
+        return [p for l in self.layers for p in l.params()]
+
+    def grads(self):
+        """
+        Return all gradients of the model
+        """
+        return [g for l in self.layers for g in l.grads()]
