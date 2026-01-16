@@ -1,10 +1,12 @@
 """
-2D Convolutional Layer Class
+A convolutional layer for neural networks.
 """
 import numpy as np
 
 class Conv2D:
-    """2D Convolutional layer."""
+    """
+    A 2D convolutional layer.
+    """
     def __init__(self, in_c, out_c, k, stride=1, padding=0):
         self.stride = stride
         self.padding = padding
@@ -15,6 +17,9 @@ class Conv2D:
         self.b = np.zeros(out_c)
 
     def forward(self, x):
+        """
+        Forward pass of the convolutional layer.
+        """
         self.x = x
         N, C, H, W = x.shape
         F, _, KH, KW = self.W.shape
@@ -42,6 +47,9 @@ class Conv2D:
         return out
 
     def backward(self, dout):
+        """
+        Backward pass of the convolutional layer.
+        """
         N, C, H, W = self.x.shape
         F, _, KH, KW = self.W.shape
 
@@ -62,5 +70,13 @@ class Conv2D:
 
         return dx[:,:,self.padding:-self.padding,self.padding:-self.padding]
 
-    def params(self): return [self.W, self.b]
-    def grads(self): return [self.dW, self.db]
+    def params(self):
+        """
+        return weights and biases
+        """
+        return [self.W, self.b]
+    def grads(self):
+        """
+        return gradients of weights and biases
+        """
+        return [self.dW, self.db]

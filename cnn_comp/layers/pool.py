@@ -12,6 +12,8 @@ class MaxPool2D:
     def __init__(self, k, stride=2):
         self.k = k
         self.stride = stride
+        self.input = None
+        self.argmax = {}  # To store the indices of max values
 
     def forward(self, input_data):
         """
