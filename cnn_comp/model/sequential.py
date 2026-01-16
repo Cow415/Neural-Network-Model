@@ -29,7 +29,7 @@ class SequentialModel:
         """
         return [p for l in self.layers for p in l.params()]
 
-    def grads(self):
+    def gradients(self):
         """
         Return all gradients of the model
         """

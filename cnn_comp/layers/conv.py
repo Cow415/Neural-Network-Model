@@ -88,7 +88,7 @@ class Conv2D:
         return weights and biases
         """
         return [self.W, self.b]
-    def grads(self):
+    def gradients(self):
         """
         return gradients of weights and biases
         """
