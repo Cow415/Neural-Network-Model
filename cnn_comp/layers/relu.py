@@ -16,14 +16,17 @@ class ReLU:
         """
         self.mask = input_data > 0
         return input_data * self.mask
+
     def backward(self, output_gradient):
         """
             Backward pass of ReLU activation.
         """
         return output_gradient * self.mask
+
     def params(self):
         """Null Parameters method"""
         return []  # No parameters in ReLU layer
+
     def gradients(self):
         """Null Gradients method"""
         return []   # No gradients in ReLU layer
