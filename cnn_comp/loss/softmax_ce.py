@@ -1,5 +1,5 @@
 """
-
+Loss Funtion
 """
 
 import numpy as np
@@ -9,7 +9,8 @@ class SoftmaxCrossEntropyLoss:
     Softmax Cross-Entropy Loss
     """
     def __init__(self):
-        pass
+        self.y = None
+        self.p = None
 
     def forward(self, logits, y):
         """
@@ -25,6 +26,8 @@ class SoftmaxCrossEntropyLoss:
         """
         Compute the gradient of the loss with respect to logits.
         """
+        if self.p is None or self.y is None:
+            raise ValueError("forward() must be called before backward()")
         grad = self.p.copy()
         grad[np.arange(len(self.y)), self.y] -= 1
         return grad / len(self.y)
