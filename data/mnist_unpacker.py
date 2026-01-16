@@ -33,7 +33,7 @@ def main():
     """
     Main function to load MNIST data and save as compressed .npz file.
     """
-    raw = Path("/data/raw")
+    raw = Path(__file__).parent / "raw"
 
     x_train = load_images(raw / "train-images-idx3-ubyte")
     y_train = load_labels(raw / "train-labels-idx1-ubyte")
@@ -47,15 +47,16 @@ def main():
     x_train = x_train[:, None, :, :]   # (N, 1, 28, 28)
     x_test  = x_test[:, None, :, :]
 
+    output_path = Path(__file__).parent / "mnist.npz"
     np.savez_compressed(
-        "data/mnist.npz",
+        output_path,
         x_train=x_train,
         y_train=y_train,
         x_test=x_test,
         y_test=y_test
     )
 
-    print("Saved data/mnist.npz")
+    print(f"Saved {output_path}")
 
 if __name__ == "__main__":
     main()
