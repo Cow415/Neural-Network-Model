@@ -47,7 +47,7 @@ class MaxPool2D:
             dx[b, h, w, c] += d_out[b, i, j, c]
         return dx
 
-    def parameters(self):
+    def params(self):
         """Null Parameters method"""
         return []  # No parameters in pooling layer
 

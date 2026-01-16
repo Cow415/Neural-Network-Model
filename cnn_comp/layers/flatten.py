@@ -22,7 +22,7 @@ class Flatten:
         """
         return output_gradient.reshape(self.shape)
 
-    def parameters(self):
+    def params(self):
         """
         Flatten layer has no parameters.
         """

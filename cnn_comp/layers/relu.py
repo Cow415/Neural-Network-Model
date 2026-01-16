@@ -21,7 +21,7 @@ class ReLU:
             Backward pass of ReLU activation.
         """
         return output_gradient * self.mask
-    def parameters(self):
+    def params(self):
         """Null Parameters method"""
         return []  # No parameters in ReLU layer
     def gradients(self):

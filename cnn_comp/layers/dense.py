@@ -34,7 +34,7 @@ class Dense:
         self.grad_weights = np.dot(grad_output.T, self.input_data) / self.input_data.shape[0]
         self.grad_biases = np.mean(grad_output, axis=0)
 
-    def parameters(self):
+    def params(self):
         """
         Return weights and biases
         """
