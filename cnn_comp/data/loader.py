@@ -2,36 +2,26 @@
     Data loader module:
     Shuffles indices and yield mini-batches.
 """
-import random
+# Numpy
+import numpy as np
 
 class DataLoader:
     """
     Data Loader for batching and shuffling data.
     """
     def __init__(self, data, batch_size, shuffle=True):
-        self.data = data
+        self.dataset = data
         self.batch_size = batch_size
         self.shuffle = shuffle
-        self.num_samples = len(data)
-        self.indices = list(range(self.num_samples))
-        self.current_idx = 0
-        if self.shuffle:
-            self._shuffle_indices()
-
-    def _shuffle_indices(self):
-        random.shuffle(self.indices)
 
     def __iter__(self):
-        self.current_idx = 0
+        """
+        Yield mini-batches of data.
+        """
+        idx = np.arange(len(self.dataset))
         if self.shuffle:
-            self._shuffle_indices()
-        return self
-
-    def __next__(self):
-        if self.current_idx >= self.num_samples:
-            raise StopIteration
-
-        batch_indices = self.indices[self.current_idx:self.current_idx + self.batch_size]
-        batch = [self.data[i] for i in batch_indices]
-        self.current_idx += self.batch_size
-        return batch
+            np.random.shuffle(idx)
+        for i in range(0, len(idx), self.batch_size):
+            batch = idx[i:i+self.batch_size]
+            X, y = zip(*[self.dataset[j] for j in batch])
+            yield np.array(X), np.array(y)
